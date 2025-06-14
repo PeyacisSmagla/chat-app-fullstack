@@ -3,35 +3,36 @@ import http from "http";
 import express from "express";
 
 const app = express();
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: { origin: ["http://localhost:5173"] },
+  cors: {
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  },
 });
 
-export function getReceiverSocketId(userId) {
-  return userSocketMap[userId];
-}
-
-// used to store online users
-
-const userSocketMap = {};
+const onlineUsers = new Set();
 
 io.on("connection", (socket) => {
-  console.log("A User Connected ", socket.id);
+  console.log("A user connected:", socket.id);
 
   const userId = socket.handshake.query.userId;
 
-  if (userId) userSocketMap[userId] = socket.id;
+  if (userId) {
+    socket.join(userId);
+    onlineUsers.add(userId);
+    console.log(`User ${userId} joined room`);
+  }
 
-  // send events to all connected user
-  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  io.emit("getOnlineUsers", Array.from(onlineUsers));
 
   socket.on("disconnect", () => {
-    console.log("A User Disconnected ", socket.id);
-    delete userSocketMap[userId];
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    console.log("A user disconnected:", socket.id);
+    if (userId) {
+      onlineUsers.delete(userId);
+    }
+    io.emit("getOnlineUsers", Array.from(onlineUsers));
   });
 });
 

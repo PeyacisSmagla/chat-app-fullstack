@@ -17,6 +17,8 @@ const Sidebar = () => {
 
   if (isUsersLoading) return <SidebarSkeleton />;
 
+  // console.log(onlineUsers);
+
   return (
     <Box
       sx={{

@@ -37,3 +37,6 @@ coverage/
 
 # Optional: TypeScript
 *.tsbuildinfo
+
+# Refrence file
+ref

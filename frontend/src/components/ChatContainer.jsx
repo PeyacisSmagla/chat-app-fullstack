@@ -1,7 +1,8 @@
-import { useTheme } from "@emotion/react";
-import { Box, Skeleton, Typography } from "@mui/material";
-import { useChatStore } from "../store/useChatStore";
 import { useEffect, useRef, useLayoutEffect } from "react";
+import { Box, Skeleton, Typography } from "@mui/material";
+
+import { useTheme } from "@emotion/react";
+import { useChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import InputMessage from "./InputMessage";
 
@@ -78,7 +79,6 @@ const ChatContainer = () => {
     >
       <ChatHeader />
 
-      {/* Messages area */}
       <Box
         ref={scrollRef}
         sx={{
@@ -167,7 +167,6 @@ const ChatContainer = () => {
         )}
       </Box>
 
-      {/* Input box fixed at bottom */}
       <Box
         sx={{
           borderTop: `1px solid ${theme.palette.divider}`,
